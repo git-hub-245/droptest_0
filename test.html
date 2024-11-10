@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            .dropdown-container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+        
+            .selection-label {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Modified dropdown containers -->
+<div class="dropdown-container">
+    <select id="firstDropdown" onchange="updateSecondDropdown()">
+        <option value="">Select Category</option>
+    </select>
+    <span id="firstSelection" class="selection-label"></span>
+</div>
+
+<div class="dropdown-container">
+    <select id="secondDropdown" onchange="updateThirdDropdown()" style="display: none">
+        <option value="">Select Subcategory</option>
+    </select>
+    <span id="secondSelection" class="selection-label"></span>
+</div>
+
+<div class="dropdown-container">
+    <select id="thirdDropdown" style="display: none">
+        <option value="">Select Final Option</option>
+    </select>
+    <span id="thirdSelection" class="selection-label"></span>
+</div>
+    
+        <!-- Add the JavaScript code -->
+        <script>
+            // Sample data structure
+            const data = {
+                'Electronics': {
+                    'Phones': ['iPhone', 'Samsung', 'Google Pixel'],
+                    'Laptops': ['MacBook', 'Dell', 'HP']
+                },
+                'Clothing': {
+                    'Men': ['Shirts', 'Pants', 'Shoes'],
+                    'Women': ['Dresses', 'Skirts', 'Boots']
+                }
+            };
+    
+            // Populate first dropdown
+            const firstDropdown = document.getElementById('firstDropdown');
+            Object.keys(data).forEach(category => {
+                const option = new Option(category, category);
+                firstDropdown.add(option);
+            });
+    
+            function updateSecondDropdown() {
+        const firstValue = firstDropdown.value;
+        const secondDropdown = document.getElementById('secondDropdown');
+        const thirdDropdown = document.getElementById('thirdDropdown');
+        
+        // Update first selection display
+        document.getElementById('firstSelection').textContent = firstValue ? `Selected: ${firstValue}` : '';
+        
+        // Reset and hide subsequent dropdowns and their selections
+        secondDropdown.innerHTML = '<option value="">Select Subcategory</option>';
+        thirdDropdown.innerHTML = '<option value="">Select Final Option</option>';
+        document.getElementById('secondSelection').textContent = '';
+        document.getElementById('thirdSelection').textContent = '';
+        thirdDropdown.style.display = 'none';
+        
+        if (firstValue) {
+            Object.keys(data[firstValue]).forEach(subcategory => {
+                const option = new Option(subcategory, subcategory);
+                secondDropdown.add(option);
+            });
+            secondDropdown.style.display = 'block';
+        } else {
+            secondDropdown.style.display = 'none';
+        }
+    }
+
+    function updateThirdDropdown() {
+        const firstValue = firstDropdown.value;
+        const secondValue = document.getElementById('secondDropdown').value;
+        const thirdDropdown = document.getElementById('thirdDropdown');
+        
+        // Update second selection display
+        document.getElementById('secondSelection').textContent = secondValue ? `Selected: ${secondValue}` : '';
+        
+        // Reset third dropdown and its selection
+        thirdDropdown.innerHTML = '<option value="">Select Final Option</option>';
+        document.getElementById('thirdSelection').textContent = '';
+        
+        if (secondValue) {
+            data[firstValue][secondValue].forEach(item => {
+                const option = new Option(item, item);
+                thirdDropdown.add(option);
+            });
+            thirdDropdown.style.display = 'block';
+        } else {
+            thirdDropdown.style.display = 'none';
+        }
+    }
+
+    // Add event listener for third dropdown
+    document.getElementById('thirdDropdown').addEventListener('change', function() {
+        const thirdValue = this.value;
+        document.getElementById('thirdSelection').textContent = thirdValue ? `Selected: ${thirdValue}` : '';
+    });
+</script>
+    </body>
+    
+</body>
+</html>
