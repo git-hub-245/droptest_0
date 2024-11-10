@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+   
+    <style>
+      .field-label-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .is-hidden {
+        display: none;
+      }
+  
+    </style>
+  </head>
+
+  <body>
+    <section class="section py-1">
+
+      <!-- Thực hiện -->
+      <div class="field mb-1">
+        <div class="field-label-container">
+          <label class="label has-text-link mb-1 is-size-6">Thực hiện</label>
+          <ol     id="output-01" class="help is-success is-danger mb-2"></ol>
+        </div>
+        <div   class="select is-primary is-fullwidth is-rounded is-size-6 p-0">
+          <select id="input-01">
+          <option disabled selected value>Chọn nhân viên</option>
+          </select>
+        </div>        
+      </div>
+      <!-- Phối hợp -->
+      <div class="field mb-1">
+        <div class="field-label-container">
+          <label class="label has-text-link mb-1 is-size-6">Phối hợp</label>
+          <p     id="output-02" class="help is-success is-danger mb-2"></p>
+        </div>
+        <div   class="select is-warning is-fullwidth is-rounded is-size-6 p-0">
+          <select id="input-02">
+          <option disabled selected value>Chọn nhân viên</option>
+        </select>
+        </div>
+      </div>
+      <!-- Giám sát -->
+      <div class="field mb-1">
+        <div class="field-label-container">
+          <label class="label has-text-link mb-1 is-size-6 ">Giám sát</label>
+          <p     id="output-03" class="help is-success is-danger mb-2"></p>
+        </div>        
+        <div   class="select is-warning is-fullwidth is-rounded is-size-6">
+          <select id="input-03">
+          <option disabled selected value>Chọn nhân viên</option>
+        </select>
+        </div>
+      </div>
+      <!-- Người giao việc -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Người giao việc</label>        
+        <div   class="select is-primary is-fullwidth is-rounded is-size-6">
+          <select id="input-04">
+          <option disabled selected value>Chọn người giao việc</option>
+        </select>
+        </div>
+      </div>
+
+      <!-- Loại công việc: Dropdown hardcode -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Loại công việc</label>
+        <div   class="select is-primary is-fullwidth is-rounded is-size-6">
+          <select id="input-05">
+          <option>Công việc mới</option>
+          <option>Bổ trợ công việc đã giao</option>
+        </select>
+        </div>
+      </div>
+      <!-- Độ ưu iên: Dropdown hardcode -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Độ ưu tiên</label>
+        <div   class="select is-primary is-fullwidth is-rounded is-size-6">
+          <select id="input-06">
+            <option>Bình thường</option>
+            <option>Khẩn cấp</option>
+            <option>Quan trọng</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Nội dung công việc: textarea -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Nội dung công việc</label>
+        <textarea id="input-07" class="textarea is-primary  is-normal  is-rounded" placeholder="Kéo rộng xuống nếu cần" rows="1"></textarea>
+      </div>
+      <!-- Kết quả mong đợi: textarea -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Kết quả mong đợi</label>
+        <textarea id="input-08" class="textarea is-primary  is-normal  is-rounded" placeholder="Kéo rộng xuống nếu cần" rows="1"></textarea>
+      </div>
+      <!-- Yêu cầu đặc biệt: textarea -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Yêu cầu đặc biệt</label>
+        <textarea id="input-09" class="textarea is-warning  is-normal  is-rounded" placeholder="Kéo rộng xuống nếu cần" rows="1"></textarea>
+      </div>
+
+      <!-- Bắt đầu: time & date -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Thời gian bắt đầu</label>
+      </div>
+      <div class="field is-grouped mb-1">
+        <input  id="input-10"   class="input is-warning  is-small  is-rounded"   type="time"/>
+        <input  id="input-11"   class="input is-primary  is-small  is-rounded  has-text-centered"   type="date"/>       
+      </div>
+
+      <!-- Kết thúc: time & date -->
+      <div class="field mb-1">
+        <label class="label has-text-link mb-1 is-size-6">Thời gian kết thúc</label>
+       </div>
+      <div class="field is-grouped mb-1">
+        <input  id="input-12"   class="input is-warning  is-small  is-rounded"   type="time"/>
+        <input  id="input-13"   class="input is-primary  is-small  is-rounded  has-text-centered"   type="date"/>       
+      </div>
+
+      <!-- Progress bar -->
+      <progress id="loader" class="progress is-small mb-0 mt-1 is-hidden" max="100">10%</progress>
+
+      <!-- Button giao việc -->
+      <div class="buttons is-centered mb-2 mt-2">
+        <button id="buttonSave" class="button is-link is-focused py-1 mx-1">Giao việc cho nhân viên</button>
+      </div>     
+
+      <footer class="footer py-0">
+        <div class="content has-text-centered is-size-6">
+          <strong>Powered</strong> by <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=hahp.nuce60@gmail.com" target="_blank">hahp.nuce60</a>
+        </div>
+      </footer>
+    </section>   
+                        <script>                           
+                          var infoArr;
+
+                          //Vòng lặp NV
+                          function selectWorker(element, arr, index) {
+                            element.innerHTML = '<option disabled selected value>Chọn nhân viên</option>'
+                            arr.forEach(function(r){
+                              const option = document.createElement('option')
+                              option.value = r[index]
+                              option.innerHTML = r[index]
+                              element.appendChild(option)
+                            })
+                          }                        
+                          //Dropdown Đảm nhiệm
+                          function selectNV1(arr) {
+                            infoArr = arr.filter(function(r){return true})
+                            const element = document.getElementById("input-01")
+                            selectWorker(element, infoArr, 3)
+                          }
+                          //Dropdown Phối hợp + Giám sát
+                          function selectNV2() {
+                            const selectIds = ["input-02", "input-03"]
+                            selectIds.forEach(id => {
+                              const element = document.getElementById(id)
+                              const selected = document.getElementById("input-01").value
+                              const input = infoArr.filter((r) => r[3] !== selected)
+                              selectWorker(element, input, 3)
+                              document.getElementById("loader").classList.add("is-hidden")
+                            })
+                          }
+                          //Dropdown Giao việc
+                          function selectGV(arr) {
+                            const element = document.getElementById("input-04")
+                            element.innerHTML = '<option disabled selected value>Chọn người giao việc</option>'
+                            arr.forEach(function(r){
+                              const option = document.createElement('option')
+                                option.value = r[0]
+                                option.innerHTML = r[0]
+                                element.appendChild(option)
+                              })                            
+                          }                         
+
+                          //Thông tin Đảm nhiệm
+                          var corresURL;
+                          function emailNV1(){
+                            const element = document.getElementById("output-01")
+                            const selected = document.getElementById("input-01").value
+                            const email = infoArr.filter((r) => r[3] === selected)
+                            corresURL = email[0][5]
+                            element.innerHTML = email[0][4]                          
+                          }
+                          //Thông tin Phối hợp
+                          function emailNV2(){
+                            const element = document.getElementById("output-02")
+                            const selected = document.getElementById("input-02").value
+                            const email = infoArr.filter((r) => r[3] === selected)
+                            element.innerHTML = email[0][4]
+                            document.getElementById("loader").classList.add("is-hidden")
+                          }
+                          //Thông tin Giám sát
+                          function emailNV3(){
+                            const element = document.getElementById("output-03")
+                            const selected = document.getElementById("input-03").value
+                            const email = infoArr.filter((r) => r[3] === selected)
+                            element.innerHTML = email[0][4]
+                            document.getElementById("loader").classList.add("is-hidden")
+                          }
+
+                          function stoploading(){
+                            document.getElementById("loader").classList.add("is-hidden")
+                          }
+                          
+                          function newRow(){
+                            let input_01 = document.getElementById("input-01").value  //đang để const, bảo sao không thay được value
+                            let input_02 = document.getElementById("input-02").value
+                            let input_03 = document.getElementById("input-03").value
+                            let input_04 = document.getElementById("input-04").value
+                            let input_05 = document.getElementById("input-05").value
+                            let input_06 = document.getElementById("input-06").value
+                            let input_07 = document.getElementById("input-07").value
+                            let input_08 = document.getElementById("input-08").value
+                            let input_09 = document.getElementById("input-09").value
+                            let input_10 = document.getElementById("input-10").value
+                            let input_11 = document.getElementById("input-11").value
+                            let input_12 = document.getElementById("input-12").value
+                            let input_13 = document.getElementById("input-13").value
+
+                            let output_01 = document.getElementById("output-01").innerHTML                         
+                            let output_02 = corresURL     
+
+                            document.getElementById("loader").classList.remove("is-hidden")                         
+
+                            let myRow = [
+                              input_01,
+                              input_02,
+                              input_03,
+                              input_04,
+                              input_05,
+                              input_06,
+                              input_07,
+                              input_08,
+                              input_09,
+                              input_10,
+                              input_11,
+                              input_12,
+                              input_13,
+                              output_01,
+                              output_02
+                            ]
+
+                            let criterion = [
+                              input_01,
+                              input_04,
+                              input_05,
+                              input_06,
+                              input_07,
+                              input_08,
+                              input_11,
+                              input_13
+                            ]
+
+                            if     (  input_11 > input_13 ) { google.script.run.errDate()  } 
+                            else if( criterion.every((element) => element.length != 0)  ) {
+
+                              const data = {
+                              id_1: input_01,
+                              id_2: input_02,
+                              id_3: input_03,
+                              id_4: input_04,
+                              id_5: input_05,
+                              id_6: input_06,
+                              id_7: input_07,
+                              id_8: input_08,
+                              id_9: input_09,
+                              id_10: input_10,
+                              id_11: input_11,
+                              id_12: input_12,
+                              id_13: input_13,
+
+                              id_r1: output_01,
+                              id_r2: output_02
+                              }
+
+                              google.script.run.newTask(data)
+
+                              document.getElementById("input-01").value = ''
+                              document.getElementById("input-02").value = ''
+                              document.getElementById("input-03").value = ''
+                              document.getElementById("input-04").value = ''
+                              document.getElementById("input-05").value = ''
+                              document.getElementById("input-06").value = ''
+                              document.getElementById("input-07").value = ''
+                              document.getElementById("input-08").value = ''
+                              document.getElementById("input-09").value = ''
+                              document.getElementById("input-10").value = ''
+                              document.getElementById("input-11").value = ''
+                              document.getElementById("input-12").value = ''     
+                              document.getElementById("input-13").value = ''                              
+                              document.getElementById("output-01").innerHTML = '' //trong trường hợp này innerHTML -  innerText - textContent có vẻ đều dùng được, .value thì không
+                              document.getElementById("output-02").innerText = ''
+                              document.getElementById("output-03").textContent = ''                           
+                            }
+                            else {  google.script.run.errMessage()  }
+                          }
+                      
+                          document.addEventListener("DOMContentLoaded",google.script.run.withSuccessHandler(selectNV1).getInfoArray())
+                          document.addEventListener("DOMContentLoaded",google.script.run.withSuccessHandler(selectGV).getAssignors())
+                          document.getElementById("input-01").addEventListener("change",selectNV2)
+                          document.getElementById("input-01").addEventListener("change",emailNV1)    
+                          document.getElementById("input-02").addEventListener("change",emailNV2) 
+                          document.getElementById("input-03").addEventListener("change",emailNV3) 
+                          document.getElementById("buttonSave").addEventListener("click",newRow)    
+
+                          document.getElementById("input-04").addEventListener("click",stoploading) 
+                          document.getElementById("input-05").addEventListener("click",stoploading) 
+                          document.getElementById("input-06").addEventListener("click",stoploading) 
+                          document.getElementById("input-07").addEventListener("click",stoploading)
+                          document.getElementById("input-08").addEventListener("click",stoploading) 
+                          document.getElementById("input-09").addEventListener("click",stoploading) 
+                          document.getElementById("input-10").addEventListener("click",stoploading) 
+                          document.getElementById("input-11").addEventListener("click",stoploading)
+                          document.getElementById("input-12").addEventListener("click",stoploading) 
+                          document.getElementById("input-13").addEventListener("click",stoploading) 
+                                              
+                        </script>
+  </body>
+</html>
